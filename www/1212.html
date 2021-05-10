@@ -1,0 +1,62 @@
+<html>
+<head>
+	<title>YktGIS</title>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" >
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+    	.heading{
+    		width:100%;
+    	}
+    </style>
+</head>
+<body>
+	
+ <span class="heading">АВТОРИЗАЦИЯ</span>
+ <div style="width:80%">
+	 <div class="form-group">
+	 	<input type="name" class="form-control" id="Name" placeholder="Name">
+	 	<i class="fa fa-user"></i>
+	 </div>
+	 <div class="form-group help">
+	 <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+	 <i class="fa fa-lock"></i>
+	 <a href="#" class="fa fa-question-circle"></a>
+ 	</div>
+ </div>
+ <div class="form-group">
+ <div class="main-checkbox">
+ <input type="checkbox" value="none" id="checkbox1" name="check"/>
+ <label for="checkbox1"></label>
+ </div>
+
+ <button type="submit" class="btn btn-default" id="signin">ВХОД</button>
+ </div>
+<script type="text/javascript">
+	var url = "http://127.0.0.1:8000/";
+	var button = $("#signin");
+	button.click(function(){
+		$.ajax({
+                    url: url + "signin",
+                    data: {
+                        name: $("#Name").value;,
+                        password: $("#inputPassword").value;,
+                        //number : $('#number').val(),
+                        //type : $('#type').val()
+                    },
+                    success: function(arg) {
+                   		console.log(arg);
+                    }
+                }
+
+            );
+
+	});
+	
+	
+</script>>
+</body>
+</html>

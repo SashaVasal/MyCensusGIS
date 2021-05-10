@@ -1,0 +1,48 @@
+*{
+	margin:0;
+	padding:0;
+}
+html,body{
+	height:100%;
+}
+#map {
+	float: left;
+}
+#dadreppanel {
+	background:rgba(0,0,0,0.2);
+	left:0;
+	top:0;
+}
+#reportpanel{
+	position:absolute;
+	right:0;
+}
+.overflow-hidden{
+	overflow: hidden !important;
+}
+.bg-white{
+	background: white;
+}
+.h-85{
+	height:100% !important;
+}
+.h-10{
+	height:100% !important;
+}
+.w-40{
+	width:100% !important;
+}
+.list-group-item{
+	padding:.25rem .25rem !important;
+	border:none;
+}
+.bg-white{
+	background: white;
+}
+.bg-lgrey{
+	background: rgba(0,0,0,.05);
+}
+input{
+    margin-top:10px;
+    margin-left:10px;
+}

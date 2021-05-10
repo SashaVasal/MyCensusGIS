@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>YktGIS</title>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" >
+    <link rel="stylesheet" href="css/style.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js'></script>
+
+    <script type="text/javascript" src="js/jquery-1.6.4-min.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css' type='text/css'/>
+   
+     
+</head>
+
+<body>
+    <div style="height:100vh; width:100%">
+
+        <div id="map" style="height:100%; width:100%" class="map"></div>
+        <img src="images/create_with_plus_mail_layer-512.png" style="width:50px;height:50px; position:absolute; top:87%; left:80%" id="make" />
+        <img src="images/Cancel-512.png" style="width:50px;height:50px; position:absolute; top:87%; left:80%; display:none " id="cancel" />
+        <script type="text/javascript">
+            var id_point = 0;
+            var house;
+            var make_polygon = false;
+            mapboxgl.accessToken = 'pk.eyJ1Ijoic2FzaGF2YXNhbCIsImEiOiJjam96c3cyNWEwMjZzM2tvZjJpcGkybW12In0.xg2XcCbegeZbVaFSje6ppQ';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v9',
+                center: [129.180466, 61.539044],
+                zoom: 17
+            });
+
+            map.on('load', function() {
+                
+                map.addLayer({
+                    'id': 'states-layer',
+                    'type': 'fill',
+                    'source': {
+                        'type': 'geojson',
+                        'data': url + 'SeeJson'
+                    },
+                    'paint': {
+                        'fill-color': 'rgba(200, 100, 240, 0.4)',
+                        'fill-outline-color': 'rgba(200, 100, 240, 1)'
+                    }
+                });
+                
+
+                map.on('click', 'states-layer', function(e) {
+                    //console.log(e.features[0]);
+                    id = e.features[0].properties.id;
+                    house = e;
+                    console.log(e.features[0].properties.id);
+                    OpenPage(e);
+                });
+                
+                map.on('click', function(e) {
+                    id_point++;
+                    //console.log(e.features[0]);
+                    if (make_polygon != false) {
+                        console.log(e.lngLat);
+                        //load_point(e);
+                        //map.on('draw.create', updateArea);
+                        
+
+                    }
+                })
+                // Change the cursor to a pointer when the mouse is over the states layer.
+                map.on('mouseenter', 'states-layer', function() {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+                // Change it back to a pointer when it leaves.
+                map.on('mouseleave', 'states-layer', function() {
+                    map.getCanvas().style.cursor = '';
+                });
+
+
+            });
+
+            var draw = new MapboxDraw({
+    displayControlsDefault: false,
+    controls: {
+        polygon: true,
+        trash: true
+    }
+});
+
+
+map.on('draw.create', updateArea);
+map.on('draw.delete', updateArea);
+map.on('draw.update', updateArea);
+    function updateArea(e) {
+         var data = draw.getAll();
+       
+            
+            console.log(data); 
+        
+      
+    
+}
+        </script>
+
+    </div>
+    
+   
+
+    
+    
+
+
+
+    <div class="w-100 h-100 animated fast position-fixed" id="dadreppanel">
+        <div class="h-100 w-40 animated fast rounded-left" id="reportpanel">
+            <ul class="list-group list-group-flush bg-white rounded-left overflow-hidden" style="border:1px solid red; height:100%; width:140%">
+
+                <li class="list-group-item py-1 pl-1 bg-danger"><a href="#" id="close"><i class="material-icons small" style="transform:scale(1.7,1.7);color:white">arrow_back</i></a></li>
+                <li class="list-group-item">Участок: <input value="Ключева"></li>
+                <li class="list-group-item ">Кол людей: <input id="people" class="people"></li>
+                <li class="list-group-item">Площадь участка:<input value="64" id="type"> м2</li>
+                <li class="list-group-item">Тип участка: <input value="ИЖС"></li>
+                <li class="list-group-item">Количество квартир: <input id="number" class="number" value="8"></li>
+                <button id="button_save" value="Save" style="width:40%" class="button_save">SAVE </button>
+                <button id="delete" value="Delete" style="width:40%" class="button_delete">Delete </button>
+
+            </ul>
+        </div>
+    </div>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+
+    <script>
+        var url = "http://censusgis.ru/";
+
+        var make = $("#make");
+        var cancel = $("#cancel");
+        var CreateHouse = $("#CreateHouse");
+        console.log(cancel);
+        
+        
+        make[0].onclick = function() {
+            map.addControl(draw);
+            make_polygon = true;
+            cancel[0].style.display = "block";
+            make[0].style.display = "none";
+            
+            //create_polygon = document.querySelector(".mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_polygon");
+            //create_polygon.classList.add("active");
+        };
+        cancel[0].onclick = function() {
+            map.removeControl(draw);
+            console.log(draw);
+            make_polygon = false;
+            cancel[0].style.display = "none";
+            make[0].style.display = "block";
+        };
+
+
+        var btn = document.querySelector(".button_save");
+        var delete_btn = document.querySelector(".button_delete");
+        btn.onclick = function() {
+
+            hide();
+            $.ajax({
+                    url: url + "ChangePeople",
+                    data: {
+                        people: $('#people').val(),
+                        id: id,
+                        //number : $('#number').val(),
+                        //type : $('#type').val()
+                    }
+                }
+
+            )
+        }
+        delete_btn.onclick = function() {
+            hide();
+            $.ajax({
+                    url: url + "Delete_hause",
+                    data: {
+                        id: id
+                    }
+                }
+
+            )
+
+        }
+
+        function func() {
+            if (map.loaded() != false) {
+                console.log("Загрузка карты прошла успешно ");
+                console.log(map);
+            }
+        }
+        function load_point(e){
+           
+            
+            
+        }
+
+        setTimeout(func, 5000);
+        
+
+    </script>
+</body>
+
+</html>
